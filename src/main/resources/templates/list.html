@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WP Exam</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<div>
-    <!-- The form below should invoke the method ProductsController.showProducts -->
-    <form id="filter-form">
-
-        <label for="nameSearch">Name</label>
-        <input id="nameSearch" type="text" name="nameSearch"/>
-        <label for="categoryId">Category</label>
-        <select id="categoryId" name="categoryId">
-            <option value="">All</option>
-            <!-- For each category you should have one <option> like below  -->
-            <option th:each="cat: ${categories}" th:text="${cat.name}" th:value="${cat.id}"> [cat.name]</option>
-
-        </select>
-        <button id="filter" type="submit">Filter</button>
+<div class="container mt-4">
+    <form id="filter-form" class="mb-4">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="nameSearch">Name</label>
+                <input id="nameSearch" type="text" class="form-control" name="nameSearch"/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="categoryId">Category</label>
+                <select id="categoryId" class="form-control" name="categoryId">
+                    <option value="">All</option>
+                    <!-- For each category you should have one <option> like below  -->
+                    <option th:each="cat: ${categories}" th:text="${cat.name}" th:value="${cat.id}"> [cat.name]</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <button id="filter" type="submit" class="btn btn-primary mt-4">Filter</button>
+            </div>
+        </div>
     </form>
-    <div >
-        <!-- ProductsController.showAdd -->
-        <a href="/products/add" class="add-item" sec:authorize="hasRole('ROLE_ADMIN')">
+
+    <div class="mb-3">
+        <a href="/products/add" class="btn btn-success add-item" sec:authorize="hasRole('ROLE_ADMIN')">
             Add new product
         </a>
     </div>
-    <table>
+
+    <table class="table">
+        <thead>
         <tr>
             <th>Product name</th>
             <th>Price</th>
@@ -35,6 +45,8 @@
             <th>Creator</th>
             <th>Actions</th>
         </tr>
+        </thead>
+        <tbody>
         <!-- For each product you should have one <tr> like below -->
         <tr class="item" th:each="prod: ${products}">
             <td th:text="${prod.name}">[prod.name]</td>
@@ -50,21 +62,23 @@
             <td>
                 <!-- ProductsController.delete -->
                 <form th:method="post" th:action="@{'/products/{id}/delete' (id=${prod.id})}" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <button type="submit" class="delete-item">Delete</button>
+                    <button type="submit" class="btn btn-danger delete-item">Delete</button>
                 </form>
                 <!-- ProductsController.showEdit -->
-                <a th:href="@{'/products/{id}/edit' (id=${prod.id})}" sec:authorize="hasRole('ROLE_ADMIN')" class="edit-item">Edit</a>
+                <a th:href="@{'/products/{id}/edit' (id=${prod.id})}" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary edit-item">Edit</a>
             </td>
         </tr>
+        </tbody>
     </table>
-
 </div>
-<div>
-    <ul id="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/logout">Logout</a></li>
+
+<div class="container mt-4">
+    <ul id="nav" class="nav">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
     </ul>
 </div>
+
 </body>
 </html>
